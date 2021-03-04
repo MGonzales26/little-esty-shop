@@ -66,6 +66,42 @@ RSpec.describe 'Admin Invoices Show page' do
       end
     end
 
+
+    describe 'I see the invoice status is a select field with current status selected' do
+      describe 'When I click this select field' do
+        it 'I can select a new status for the Invoice' do
+          invoice_1 = create(:invoice, status: 1)
+
+          visit "/admin/invoices/#{invoice_1.id}"
+
+          expect(page).to have_field("invoice[status]")
+
+          within(".status-dropdown") do
+            expect(page).to have_select("invoice[status]", selected: invoice_1.status)
+          end
+
+          page.select 'cancelled', from: 'invoice[status]'
+        end
+
+        it 'I see a button to Update Invoice Status, I click it, and I am taken back to the admin invoice show page' do
+          invoice_1 = create(:invoice, status: 1)
+          visit "/admin/invoices/#{invoice_1.id}"
+
+          page.select 'cancelled', from: 'invoice[status]'
+          click_on("Update Invoice Status")
+
+          expect(current_path).to eq("/admin/invoices/#{invoice_1.id}")
+        end
+
+        it 'And I see that my Invoice status has now been updated' do
+          invoice_1 = create(:invoice, status: 1)
+          visit "/admin/invoices/#{invoice_1.id}"
+
+          click_on("Update Invoice Status")
+
+          expect(page).to have_content("Current Status: #{invoice_1.status}")
+        end
+
     it 'I see the total revenue that will be generated from this invoice' do
       customer = create(:customer, first_name: "Minnie")
       invoice = create(:invoice, customer: customer)

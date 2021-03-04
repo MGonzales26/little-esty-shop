@@ -2,7 +2,14 @@
 
 
 <h3>Invoice ID: <%= @invoice.id %></h3>
-<h4>Status: <%= @invoice.status %></h4>
+<h4>Current Status: <%= @invoice.status %></h4>
+<section class="status-dropdown">
+  <h4>Status: <%= form_with model: [:admin, @invoice], local: true do |f| %>
+    <%= f.select :status, [["In Progress", "in_progress"], "completed", "cancelled" ], selected: @invoice.status%>
+    <%= f.submit "Update Invoice Status" %>
+    <% end %></h4>
+</section>
+
 <h4>Created at: <%= @invoice.created_at %></h4>
 
 <section class="total-revenue">

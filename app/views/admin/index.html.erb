@@ -3,11 +3,13 @@
 <a href="/admin/invoices">Invoices</a><br><br>
 
 <section>Incomplete Invoices</section>
-<% @invoices.incomplete.oldest_to_newest.each do |incomplete| %>
-  <ul>
-    <a href="admin/invoices/<%= incomplete.id %>"><li>Invoice: <%= incomplete.id %> - <%= incomplete.date_created %> </li></a>
-  </ul>
-<% end  %>
+<ul>
+  <% @invoices.incomplete.oldest_to_newest.each do |incomplete| %>
+  <li id="incomplete-invoice-<%= incomplete.id %>">
+    <%= link_to "Invoice: #{incomplete.id} - #{incomplete.date_created}", admin_invoice_path(incomplete) %>
+  </li>
+  <% end  %>
+</ul>
 
 <section>Top Customers</section>
 

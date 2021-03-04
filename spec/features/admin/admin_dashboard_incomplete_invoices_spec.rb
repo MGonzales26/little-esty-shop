@@ -34,7 +34,7 @@ describe 'When I visit the admin dashboard (/admin)' do
 
   it 'Then I see a link to the admin merchants index (/admin/merchants)' do
     visit "/admin"
-# question: is the above it string correct?
+    # question: is the above it string correct?
     expect(page).to have_link("#{@invoice_1.id}")
     click_link("#{@invoice_1.id}")
     expect(current_path).to eq("/admin/invoices/#{@invoice_1.id}")
@@ -42,11 +42,19 @@ describe 'When I visit the admin dashboard (/admin)' do
 
   xit "Displays the date created next to each invoice formatted 'Monday, July 18, 2019'" do
     visit "/admin"
-    # this was passing 100%, disregard error for now. diana.
-    expect(page).to have_content("Invoice: #{@invoice_1.id} - #{@invoice_1.date_created}")
-    expect(page).to have_content("Invoice: #{@invoice_2.id} - #{@invoice_2.date_created}")
-    expect(page).to have_content("Invoice: #{@invoice_3.id} - #{@invoice_3.date_created}")
-    expect(page).to have_content("Invoice: #{@invoice_7.id} - #{@invoice_7.date_created}")
+
+    within("#incomplete-invoice-#{@invoice_1.id}") do
+      expect(page).to have_link("Invoice: #{@invoice_1.id} - #{@invoice_1.date_created}")
+    end
+    within("#incomplete-invoice-#{@invoice_2.id}") do
+      expect(page).to have_link("Invoice: #{@invoice_2.id} - #{@invoice_2.date_created}")
+    end
+    within("#incomplete-invoice-#{@invoice_3.id}") do
+      expect(page).to have_link("Invoice: #{@invoice_3.id} - #{@invoice_3.date_created}")
+    end
+    within("#incomplete-invoice-#{@invoice_7.id}") do
+      expect(page).to have_link("Invoice: #{@invoice_7.id} - #{@invoice_7.date_created}")
+    end
   end
 
   it 'And I see that the list is ordered from oldest to newest' do

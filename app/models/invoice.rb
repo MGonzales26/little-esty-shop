@@ -27,7 +27,7 @@ class Invoice < ApplicationRecord
   end
 
   def date_created
-    self.created_at.strftime("%A, %B %e, %Y")
+    self.created_at.strftime("%A, %B%e, %Y")
   end
 
   def find_invoice_item(item_id)
