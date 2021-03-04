@@ -101,6 +101,8 @@ RSpec.describe 'Admin Invoices Show page' do
 
           expect(page).to have_content("Current Status: #{invoice_1.status}")
         end
+      end
+    end
 
     it 'I see the total revenue that will be generated from this invoice' do
       customer = create(:customer, first_name: "Minnie")
