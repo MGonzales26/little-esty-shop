@@ -1,9 +1,9 @@
 class InvoicesController < ApplicationController
-  def index 
+  def index
     @merchant = Merchant.find(params[:merchant_id])
   end
 
-  def show 
+  def show
     @merchant = Merchant.find(params[:merchant_id])
     @invoice = Invoice.find(params[:id])
   end

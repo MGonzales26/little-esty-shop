@@ -44,7 +44,7 @@ RSpec.describe Invoice, type: :model do
         invoice_3 = create(:invoice, status: 2)
         invoice_7 = create(:invoice, status: 2)
 
-        expect(invoice_1.date_created).to eq(invoice_1.created_at.strftime("%A, %B %e, %Y"))
+        expect(invoice_1.date_created).to eq(invoice_1.created_at.strftime("%A, %B%e, %Y"))
       end
     end
 
