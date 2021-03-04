@@ -1,6 +1,3 @@
-require 'faraday'
-require 'json'
-require 'pry'
 
 class Contributor
   attr_reader :name
