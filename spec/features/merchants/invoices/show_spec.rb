@@ -35,16 +35,39 @@ RSpec.describe "Merchant Invoice Show Page" do
     it "displays the invoice item info such as item name, quantity ordered, price of item, invoice item status" do
       visit "/merchants/#{@merchant1.id}/invoices/#{@invoice1.id}"
 
-      within "#invoice_item-info" do 
+      within "#invoice_item-info-#{@invoice_item1.id}" do 
         expect(page).to have_content("Invoice item name: #{@item1.name}")
         expect(page).to have_content("Invoice item quantity: #{@invoice_item1.quantity}")
         expect(page).to have_content("Invoice item price: #{@invoice_item1.unit_price}")
         expect(page).to have_content("Invoice item status: #{@invoice_item1.status}")
+      end
 
+      within "#invoice_item-info-#{@invoice_item2.id}" do 
         expect(page).to have_content("Invoice item name: #{@item2.name}")
         expect(page).to have_content("Invoice item quantity: #{@invoice_item2.quantity}")
         expect(page).to have_content("Invoice item price: #{@invoice_item2.unit_price}")
         expect(page).to have_content("Invoice item status: #{@invoice_item2.status}")
+      end
+    end
+
+    it "can change the invoice item status to a different status" do 
+      visit "/merchants/#{@merchant1.id}/invoices/#{@invoice1.id}"
+
+      within "#invoice_item-info-#{@invoice_item1.id}" do 
+        expect(page).to have_content("Invoice item status: #{@invoice_item1.status}")
+
+        expect(page).to have_select(:status, selected: "packaged")
+
+        expect(page).to have_select(:status, :options => ["packaged", "pending", "shipped"])
+        
+        select("shipped", from: "status")
+       
+        click_on("Update Item Status")
+
+        expect(current_path).to eq("/merchants/#{@merchant1.id}/invoices/#{@invoice1.id}")
+     
+        expect(page).to have_content("Invoice item status: packaged")
+        
       end
     end
 

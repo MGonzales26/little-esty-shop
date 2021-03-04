@@ -12,17 +12,22 @@
   <p><%= "Last name: #{@invoice.customer.last_name}" %> </p>
 </section>
  
-<section id="invoice_item-info">
+
   <h3>Invoice Item Info:</h3>
   <% @invoice.invoice_items.each do |inv_item| %>
+  <section id="invoice_item-info-<%= inv_item.id %>">
   <ul>
     <li><%= "Invoice item name: #{inv_item.item.name}" %></li>
     <li><%= "Invoice item quantity: #{inv_item.quantity}" %></li>
     <li><%= "Invoice item price: #{inv_item.unit_price}" %></li>
-    <li><%= "Invoice item status: #{inv_item.status}" %></li>
+    <li>Invoice item status: <%= inv_item.status %><%= form_with url:"/merchants/#{@merchant.id}/invoice_item/#{inv_item.id}", method: :patch, local: true do |form|%>
+     <%= form.select :status, [ :shipped, :packaged, :pending], selected: inv_item.status %></li>
+    <%= form.submit "Update Item Status"%>
+    <% end %>
 </ul>
-  <% end %>
 </section>
+  <% end %>
+
 
 <section id="total-revenue">
   <h3><%= "Total revenue from invoice: #{@invoice.total_revenue}" %></h3>
