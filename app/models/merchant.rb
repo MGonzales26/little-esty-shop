@@ -13,6 +13,18 @@ class Merchant < ApplicationRecord
             .limit(5)
   end
 
+
+  def top_five_items
+    Item.joins(:invoice_items)
+        .where('merchant_id = ?', self.id)
+        .select('items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue')
+        .group('items.id')
+        .order(total_revenue: :desc)
+        .limit(5)
+  end
+
+
+
   def items_not_shipped
     Invoice.joins(:items)
            .where('merchant_id = ?', self.id)
@@ -36,5 +48,23 @@ class Merchant < ApplicationRecord
 
   def self.display_disabled
     where(status: 1)
+  end
+
+  def self.top_five_merchants_by_revenue
+    Merchant.joins(items: :invoice_items)
+    .where('invoice_items.status = ?', 2)
+    .select("merchants.*, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue")
+    .group("merchants.id")
+    .order(revenue: :desc)
+    .limit(5)
+  end
+
+  def best_day
+    Merchant.joins(items: :invoices)
+    .where('merchant_id = ?', self.id)
+    .select('merchants.*, invoices.created_at, sum(invoice_items.unit_price * invoice_items.quantity) AS revenue')
+    .group('invoices.created_at, merchants.id')
+    .order(revenue: :desc)
+    .first
   end
 end
