@@ -50,7 +50,7 @@ RSpec.describe 'When I visit the admin merchants index (/admin/merchants)' do
     end
     it 'And I see the total revenue generated next to each merchant name' do
       visit "/admin/merchants"
-      save_and_open_page
+      
       within("#top-five") do
         expect(page).to have_content(@merchant_7.name)
         expect(page).to have_content("revenue: 7")
