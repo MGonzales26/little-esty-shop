@@ -1,0 +1,7 @@
+<%= form_with model: model, local: true do |f| %>  
+    <%= f.label :quantity_threshold, "Minimum number of items to recieve discount:" %><br>
+    <%=  f.text_field :quantity_threshold %><br>
+    <%= f.label :percentage_discount, "Percentage of discount:" %><br>
+    <%=  f.text_field :percentage_discount %><br>
+    <%= f.submit %>
+<% end %>
