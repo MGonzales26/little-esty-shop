@@ -1,5 +1,7 @@
 <h1><%= @merchant.name %></h1>
 
+<%= link_to "My Discounts", merchant_bulk_discounts_path(@merchant)%>
+
 <section>
   <p><%= link_to "My Items", merchant_items_path(@merchant) %></p>
   <p><%= link_to "My Invoices", merchant_invoices_path(@merchant) %></p>

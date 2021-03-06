@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :bulk_discount do
-    percentage_discount { 1 }
-    quantity_threshold { 1 }
-    merchant { nil }
+    percentage_discount { 20 }
+    quantity_threshold { 10 }
+    merchant 
   end
 end
