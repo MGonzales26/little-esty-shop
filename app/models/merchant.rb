@@ -1,5 +1,6 @@
 class Merchant < ApplicationRecord
   has_many :items, dependent: :destroy
+  has_many :bulk_discounts, dependent: :destroy
   enum status: { enabled: 0, disabled: 1 }
 
   def top_five_customers

@@ -40,22 +40,22 @@ describe 'When I visit the admin dashboard (/admin)' do
     expect(current_path).to eq("/admin/invoices/#{@invoice_1.id}")
   end
 
-  xit "Displays the date created next to each invoice formatted 'Monday, July 18, 2019'" do
-    visit "/admin"
+  # xit "Displays the date created next to each invoice formatted 'Monday, July 18, 2019'" do
+  #   visit "/admin"
 
-    within("#incomplete-invoice-#{@invoice_1.id}") do
-      expect(page).to have_link("Invoice: #{@invoice_1.id} - #{@invoice_1.date_created}")
-    end
-    within("#incomplete-invoice-#{@invoice_2.id}") do
-      expect(page).to have_link("Invoice: #{@invoice_2.id} - #{@invoice_2.date_created}")
-    end
-    within("#incomplete-invoice-#{@invoice_3.id}") do
-      expect(page).to have_link("Invoice: #{@invoice_3.id} - #{@invoice_3.date_created}")
-    end
-    within("#incomplete-invoice-#{@invoice_7.id}") do
-      expect(page).to have_link("Invoice: #{@invoice_7.id} - #{@invoice_7.date_created}")
-    end
-  end
+  #   within("#incomplete-invoice-#{@invoice_1.id}") do
+  #     expect(page).to have_link("Invoice: #{@invoice_1.id} - #{@invoice_1.date_created}")
+  #   end
+  #   within("#incomplete-invoice-#{@invoice_2.id}") do
+  #     expect(page).to have_link("Invoice: #{@invoice_2.id} - #{@invoice_2.date_created}")
+  #   end
+  #   within("#incomplete-invoice-#{@invoice_3.id}") do
+  #     expect(page).to have_link("Invoice: #{@invoice_3.id} - #{@invoice_3.date_created}")
+  #   end
+  #   within("#incomplete-invoice-#{@invoice_7.id}") do
+  #     expect(page).to have_link("Invoice: #{@invoice_7.id} - #{@invoice_7.date_created}")
+  #   end
+  # end
 
   it 'And I see that the list is ordered from oldest to newest' do
     Invoice.destroy_all

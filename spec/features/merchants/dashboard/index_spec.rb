@@ -107,24 +107,24 @@ RSpec.describe "Merchant Dashboard" do
     # expect(page).to have_content(@invoice11.created_at) - test needs to display DOW, Month Date, Year
    end
 
-    xit "and I click on the My Items link it takes me to that merchants items page" do 
-      visit "/merchants/#{@merchant.id}/dashboard"
+    # xit "and I click on the My Items link it takes me to that merchants items page" do 
+    #   visit "/merchants/#{@merchant.id}/dashboard"
 
-      expect(page).to have_content(@merchant.name)
+    #   expect(page).to have_content(@merchant.name)
 
-      click_on "My Items"
+    #   click_on "My Items"
 
-      expect(current_path).to eq("/merchant/#{@merchant.id}/items")
-    end
+    #   expect(current_path).to eq("/merchant/#{@merchant.id}/items")
+    # end
 
-    xit "and I click on the My Invocies link it takes me to that merchants invoices page" do 
-      visit "/merchants/#{@merchant.id}/dashboard"
+    # xit "and I click on the My Invocies link it takes me to that merchants invoices page" do 
+    #   visit "/merchants/#{@merchant.id}/dashboard"
 
-      expect(page).to have_content(@merchant.name)
+    #   expect(page).to have_content(@merchant.name)
 
-      click_on "My Invoices"
+    #   click_on "My Invoices"
 
-      expect(current_path).to eq("/merchants/#{@merchant.id}/invoices")
-    end
+    #   expect(current_path).to eq("/merchants/#{@merchant.id}/invoices")
+    # end
   end
 end
