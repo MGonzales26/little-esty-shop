@@ -53,6 +53,28 @@ RSpec.describe "Bulk Discount Index Page" do
 
 
     end
+
+    it "has a link to delete the discount next to each one listed" do
+      visit merchant_bulk_discounts_path(@merchant)
+
+      within("#discount-#{@bulk_discount1.id}") do
+        expect(page).to have_link("Delete Discount")
+      end
+    end
+    
+    describe "When I click on the link" do
+      it "takes me back to the discount index page, no longer showing the discount" do
+        visit merchant_bulk_discounts_path(@merchant)
+    
+        within("#discount-#{@bulk_discount1.id}") do
+          click_on("Delete Discount")
+          expect(current_path).to eq(merchant_bulk_discounts_path(@merchant))
+        end
+
+        expect(page).to_not have_css("#discount-#{@bulk_discount1.id}")
+        save_and_open_page
+      end
+    end
   end
 
 end
