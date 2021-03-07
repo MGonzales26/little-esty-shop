@@ -2,3 +2,5 @@
 
 <h3>Number of Items needed for discount: <%= @bulk_discount.quantity_threshold%></h3>
 <h3>Percentage of discount: <%= @bulk_discount.percentage_discount %></h3>
+
+<%= link_to "Edit Bulk Discount", edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %>
