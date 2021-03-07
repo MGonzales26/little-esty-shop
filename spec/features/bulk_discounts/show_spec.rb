@@ -14,3 +14,4 @@ RSpec.describe "Bulk Discount Show Page" do
     end
   end
 end
+
