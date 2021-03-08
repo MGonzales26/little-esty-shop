@@ -3,6 +3,10 @@ require 'rails_helper'
 RSpec.describe "Bulk Discount New Page" do
   before (:each) do
     @merchant = create(:merchant)
+
+    json_response = File.read('spec/fixtures/holidays.json')
+      stub_request(:get, "https://date.nager.at/Api/v2/NextPublicHolidays/us").
+        to_return(status: 200, body: json_response)
   end
   describe "As a merchant" do
     describe "When I visit the my Bulk Discount index page" do
