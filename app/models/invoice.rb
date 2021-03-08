@@ -5,8 +5,6 @@ class Invoice < ApplicationRecord
   has_many :items, through: :invoice_items
   enum status: { in_progress: 0, completed: 1, cancelled: 2 }
 
-  has_many :merchants, through: :items
-  has_many :bulk_discounts, through: :merchants
 
   def self.incomplete
     where(status: 0).or(where(status: 2))
