@@ -26,7 +26,7 @@
       <% end %>
     </ul>
     <% if inv_item.available_discounts%>
-      <%= link_to "A discount of %#{inv_item.available_discounts.percentage_discount} was applied to #{inv_item.item.name} because #{inv_item.available_discounts.quantity_threshold} or more were ordered."%>
+      <%= link_to "A discount of %#{inv_item.available_discounts.percentage_discount} was applied to #{inv_item.item.name} because #{inv_item.available_discounts.quantity_threshold} or more were ordered.", merchant_bulk_discount_path(@merchant, inv_item.available_discounts) %>
     <% else %>
       <p>A discount was not applied to this item.</p>
     <% end %>
