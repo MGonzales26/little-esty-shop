@@ -84,13 +84,12 @@ RSpec.describe "Bulk Discount Index Page" do
     
     it "shows in this section the name and date of the next 3 upcoming US holidays are listed." do
       visit merchant_bulk_discounts_path(@merchant)
-      holidays = GitService.get_holidays
+      holidays = HolidayService.get_holidays
 
       holiday1 = holidays.first
       holiday2 = holidays.second
       holiday3 = holidays.third
       holiday4 = holidays.fourth
-      save_and_open_page
 
       within("#upcoming-holidays-list") do
         expect(page).to have_content(holiday1[:name])
