@@ -5,6 +5,7 @@ class BulkDiscountsController < ApplicationController
   def index
     @merchant
     @bulk_discounts = @merchant.bulk_discounts
+    @holidays = GitService.get_holidays[0..2]
   end
 
   def show

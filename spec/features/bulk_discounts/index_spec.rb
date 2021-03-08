@@ -65,14 +65,47 @@ RSpec.describe "Bulk Discount Index Page" do
     describe "When I click on the link" do
       it "takes me back to the discount index page, no longer showing the discount" do
         visit merchant_bulk_discounts_path(@merchant)
-    
+        
         within("#discount-#{@bulk_discount1.id}") do
           click_on("Delete Discount")
           expect(current_path).to eq(merchant_bulk_discounts_path(@merchant))
         end
-
+        
         expect(page).to_not have_css("#discount-#{@bulk_discount1.id}")
       end
+    end
+    
+    it "has a section with a header 'Upcoming Holidays" do
+      visit merchant_bulk_discounts_path(@merchant)
+      
+      expect(page).to have_content("Upcoming Holidays")
+      expect(page).to have_css("#upcoming-holidays-list")
+    end
+    
+    it "shows in this section the name and date of the next 3 upcoming US holidays are listed." do
+      visit merchant_bulk_discounts_path(@merchant)
+      holidays = GitService.get_holidays
+
+      holiday1 = holidays.first
+      holiday2 = holidays.second
+      holiday3 = holidays.third
+      holiday4 = holidays.fourth
+      save_and_open_page
+
+      within("#upcoming-holidays-list") do
+        expect(page).to have_content(holiday1[:name])
+        expect(page).to have_content(holiday1[:date])
+
+        expect(page).to have_content(holiday2[:name])
+        expect(page).to have_content(holiday2[:date])
+
+        expect(page).to have_content(holiday3[:name])
+        expect(page).to have_content(holiday3[:date])
+
+        expect(page).to_not have_content(holiday4[:name])
+        expect(page).to_not have_content(holiday4[:date])
+      end
+      
     end
   end
 
