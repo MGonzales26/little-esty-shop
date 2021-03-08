@@ -92,7 +92,6 @@ RSpec.describe "Merchant Invoice Show Page" do
       visit merchant_invoice_path(merchant1, invoice1)
       
       expect(page).to have_content(invoice1.discounted_revenue)
-      save_and_open_page
     end
   
   end
