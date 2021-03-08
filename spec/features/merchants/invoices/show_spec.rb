@@ -71,7 +71,7 @@ RSpec.describe "Merchant Invoice Show Page" do
       end
     end
 
-    xit "displays the total revenue from all items on the invoice" do 
+    it "displays the total revenue from all items on the invoice" do 
       visit "/merchants/#{@merchant1.id}/invoices/#{@invoice1.id}"
 
       within "#total-revenue" do 
@@ -92,6 +92,7 @@ RSpec.describe "Merchant Invoice Show Page" do
       visit merchant_invoice_path(merchant1, invoice1)
       
       expect(page).to have_content(invoice1.discounted_revenue)
+      save_and_open_page
     end
   
   end
