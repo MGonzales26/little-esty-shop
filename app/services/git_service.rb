@@ -35,4 +35,5 @@ class GitService
       Commit.new(commit)
     end
   end
+
 end
