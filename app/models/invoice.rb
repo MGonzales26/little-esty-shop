@@ -26,7 +26,7 @@ class Invoice < ApplicationRecord
   end
 
   def discounted_revenue
-    invoice_items.each do |invoice_item|
+    invoice_items.map do |invoice_item|
       invoice_item.discount_price
     end
     invoice_items.sum('unit_price * quantity')

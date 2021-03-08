@@ -81,7 +81,7 @@ RSpec.describe "Merchant Invoice Show Page" do
 
     it "shows the total revenue includes bulk discounts in the calculation" do
       merchant1 = create(:merchant)
-      bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50)
+      bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
       cust1 = create(:customer)
       invoice1 = create(:invoice, customer: cust1)
       item1 = create(:item, merchant: merchant1, unit_price: 10)
@@ -92,6 +92,7 @@ RSpec.describe "Merchant Invoice Show Page" do
       visit merchant_invoice_path(merchant1, invoice1)
       
       expect(page).to have_content(invoice1.discounted_revenue)
+    save_and_open_page  
     end
   
   end
