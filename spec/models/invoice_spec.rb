@@ -117,14 +117,14 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
-    describe "#total_discounted_revenue" do
+    describe "#iscounted_revenue" do
       it "returns the total revenue from the invoice including the discounts if applicable" do
         merchant1 = create(:merchant)
         merchant2 = create(:merchant)
         bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
         bulk_discount2 = create(:bulk_discount, quantity_threshold: 3, percentage_discount: 50, merchant: merchant2)
         cust1 = create(:customer)
-        invoice1 = create(:invoice, customer: cust1)
+        invoice1 = create(:invoice)
         item1 = create(:item, merchant: merchant1, unit_price: 10)
         item2 = create(:item, merchant: merchant1, unit_price: 10)
         invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
