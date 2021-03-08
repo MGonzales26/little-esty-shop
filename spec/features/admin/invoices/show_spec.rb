@@ -127,4 +127,40 @@ RSpec.describe 'Admin Invoices Show page' do
       end
     end
   end
+
+  describe "As an admin" do
+    describe "When I visit an admin invoice show page" do
+      it "shows the total revenue when there are no discounts" do
+        merchant1 = create(:merchant)
+        cust1 = create(:customer)
+        invoice1 = create(:invoice)
+        item1 = create(:item, merchant: merchant1, unit_price: 10)
+        item2 = create(:item, merchant: merchant1, unit_price: 10)
+        invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
+        invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
+        
+        visit admin_invoice_path(invoice1)
+
+        expect(page).to have_content("Total Revenue: 80")
+      end
+      
+      it "shows the total revenue includes bulk discounts in the calculation" do
+        merchant1 = create(:merchant)
+        merchant2 = create(:merchant)
+        bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
+        bulk_discount2 = create(:bulk_discount, quantity_threshold: 3, percentage_discount: 50, merchant: merchant2)
+        cust1 = create(:customer)
+        invoice1 = create(:invoice)
+        item1 = create(:item, merchant: merchant1, unit_price: 10)
+        item2 = create(:item, merchant: merchant1, unit_price: 10)
+        invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
+        invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
+        
+        visit admin_invoice_path(invoice1)
+        
+        expect(page).to have_content("Total Revenue: 55")
+      end
+    end
+  end
 end
+
