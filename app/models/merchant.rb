@@ -1,9 +1,12 @@
 class Merchant < ApplicationRecord
+  validates_presence_of :name
+  
   has_many :items, dependent: :destroy
   has_many :bulk_discounts, dependent: :destroy
   enum status: { enabled: 0, disabled: 1 }
 
   def top_five_customers
+    # require 'pry'; binding.pry
     Customer.joins(invoices: :items)
             .where('merchant_id = ?', self.id)
             .joins(invoices: :transactions)

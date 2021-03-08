@@ -15,10 +15,32 @@ RSpec.describe 'Admin/merchant new' do
 
       fill_in :name, :with => "New Merchant"
       click_button("Submit")
-
+      
       expect(current_path).to eq("/admin/merchants")
       expect(page).to have_content("New Merchant")
       expect(page).to have_content("disable")
+    end
+  end
+  
+  describe "Flash messages for create" do
+    it "shows an affirmative message if successful" do
+      visit new_admin_merchant_path
+      
+      fill_in :name, :with => "New Merchant"
+      
+      click_button("Submit")
+
+      expect(page).to have_content("New merchant has been created!")
+    end
+
+    it "shows an error message if unsuccessful" do
+      visit new_admin_merchant_path
+      
+      fill_in :name, :with => ""
+      
+      click_button("Submit")
+
+      expect(page).to have_content("Unable to create merchant!")
     end
   end
 end

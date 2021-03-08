@@ -46,6 +46,26 @@ RSpec.describe Invoice, type: :model do
         expect(Invoice.oldest_to_newest.last).to eq(invoice_3)
       end
     end
+
+    describe "::merchants_invoices" do
+      it "lists all of the invoices given a merchant's id" do
+        merchant = create(:merchant)
+        merchant2 = create(:merchant)
+        item1 = create(:item, merchant: merchant)
+        item2 = create(:item, merchant: merchant)
+        item3 = create(:item, merchant: merchant2)
+        invoice1 = create(:invoice)
+        invoice2 = create(:invoice)
+        invoice3 = create(:invoice)
+        invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1)
+        invoice_item2 = create(:invoice_item, item: item2, invoice: invoice2)
+        invoice_item3 = create(:invoice_item, item: item3, invoice: invoice3)
+  
+        expected = [invoice1, invoice2]
+  
+        expect(Invoice.merchants_invoices(merchant.id)).to eq(expected)
+      end
+    end
   end
 
   describe 'instance methods' do
@@ -95,6 +115,24 @@ RSpec.describe Invoice, type: :model do
         expect(invoice.total_revenue). to eq(3450)
 
       end
+    end
+
+    describe "#total_discounted_revenue" do
+      it "returns the total revenue from the invoice including the discounts if applicable" do
+        merchant1 = create(:merchant)
+        merchant2 = create(:merchant)
+        bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
+        bulk_discount2 = create(:bulk_discount, quantity_threshold: 3, percentage_discount: 50, merchant: merchant2)
+        cust1 = create(:customer)
+        invoice1 = create(:invoice, customer: cust1)
+        item1 = create(:item, merchant: merchant1, unit_price: 10)
+        item2 = create(:item, merchant: merchant1, unit_price: 10)
+        invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
+        invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
+        
+        expect(invoice1.discounted_revenue).to eq(55)
+      end
+
     end
   end
 end
