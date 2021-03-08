@@ -23,7 +23,6 @@
     <li>Invoice item status: <%= inv_item.status %><%= form_with url:"/merchants/#{@merchant.id}/invoice_item/#{inv_item.id}", method: :patch, local: true do |form|%>
      <%= form.select :status, [ :shipped, :packaged, :pending], selected: inv_item.status %></li>
     <%= form.submit "Update Item Status"%>
-    <% binding.pry %>
     <% end %>
 </ul>
 </section>
