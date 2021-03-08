@@ -72,7 +72,6 @@ RSpec.describe "Bulk Discount Index Page" do
         end
 
         expect(page).to_not have_css("#discount-#{@bulk_discount1.id}")
-        save_and_open_page
       end
     end
   end

@@ -6,6 +6,10 @@ RSpec.describe Merchant, type: :model do
     it { should have_many :bulk_discounts }
   end
 
+  describe "validations" do
+    it { should validate_presence_of :name }
+  end
+
 
   describe "Instance Methods" do
     describe "#top_five_items" do
@@ -100,6 +104,75 @@ RSpec.describe Merchant, type: :model do
       expect(@merchant_4.best_day.created_at).to eq(@invoice_4.created_at)
       expect(@merchant_3.best_day.created_at).to eq(@invoice_3.created_at)
       expect(@merchant_2.best_day.created_at).to eq(@invoice_2.created_at)
+    end
+
+    describe "#top_five_customers" do
+      it "lists the 5 best customers by count of transactions for a merchant" do
+        customer_1 = create(:customer, first_name: "Minnie")
+        customer_2 = create(:customer, first_name: "Lloyd")
+        customer_3 = create(:customer, first_name: "Hector")
+        customer_4 = create(:customer, first_name: "Andrea")
+        customer_5 = create(:customer, first_name: "Fred")
+        customer_6 = create(:customer, first_name: "Payton")
+        customer_7 = create(:customer, first_name: "7")
+        invoice_1 = create(:invoice, status: 'completed', customer_id: customer_6.id, created_at: "2011-03-25 09:54:09 UTC")
+        invoice_2 = create(:invoice, status: 'completed', customer_id: customer_6.id, created_at: "2012-03-25 09:54:09 UTC")
+        invoice_3 = create(:invoice, status: 'completed', customer_id: customer_6.id, created_at: "2013-03-25 09:54:09 UTC")
+        invoice_12 = create(:invoice, status: 'completed', customer_id: customer_6.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_13 = create(:invoice, status: 'completed', customer_id: customer_6.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_4 = create(:invoice, status: 'completed', customer_id: customer_4.id, created_at: "2014-03-25 09:54:09 UTC")
+        invoice_5 = create(:invoice, status: 'completed', customer_id: customer_4.id, created_at: "2015-03-25 09:54:09 UTC")
+        invoice_6 = create(:invoice, status: 'completed', customer_id: customer_4.id, created_at: "2016-03-25 09:54:09 UTC")
+        invoice_14 = create(:invoice, status: 'completed', customer_id: customer_4.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_7 = create(:invoice, status: 'completed', customer_id: customer_3.id, created_at: "2017-03-25 09:54:09 UTC")
+        invoice_8 = create(:invoice, status: 'completed', customer_id: customer_3.id, created_at: "2018-03-25 09:54:09 UTC")
+        invoice_15 = create(:invoice, status: 'completed', customer_id: customer_3.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_9 = create(:invoice, status: 'completed', customer_id: customer_2.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_10 = create(:invoice, status: 'completed', customer_id: customer_2.id, created_at: "2019-03-25 09:54:09 UTC")
+        invoice_11 = create(:invoice, status: 'completed', customer_id: customer_1.id, created_at: "2019-03-25 09:54:09 UTC")
+        merchant_1 = create(:merchant)
+        item_1 = create(:item, merchant: merchant_1, unit_price: 1)
+        item_2 = create(:item, merchant: merchant_1, unit_price: 2)
+        item_3 = create(:item, merchant: merchant_1, unit_price: 3)
+        item_4 = create(:item, merchant: merchant_1, unit_price: 4)
+        item_5 = create(:item, merchant: merchant_1, unit_price: 5)
+        item_6 = create(:item, merchant: merchant_1, unit_price: 6)
+        item_7 = create(:item, merchant: merchant_1, unit_price: 1)
+        invoice_item_1 = create(:invoice_item, item_id: item_1.id, invoice_id: invoice_1.id, unit_price: 1, status: 2)
+        invoice_item_2 = create(:invoice_item, item_id: item_2.id, invoice_id: invoice_2.id, unit_price: 2, status: 2)
+        invoice_item_3 = create(:invoice_item, item_id: item_3.id, invoice_id: invoice_3.id, unit_price: 3, status: 2)
+        invoice_item_4 = create(:invoice_item, item_id: item_4.id, invoice_id: invoice_4.id, unit_price: 4, status: 2)
+        invoice_item_5 = create(:invoice_item, item_id: item_5.id, invoice_id: invoice_5.id, unit_price: 5, status: 2)
+        invoice_item_6 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_6.id, unit_price: 60, status: 2)
+        invoice_item_7 = create(:invoice_item, item_id: item_7.id, invoice_id: invoice_7.id, unit_price: 1, status: 2)
+        invoice_item_8 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_8.id, unit_price: 10, status: 2)
+        invoice_item_9 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_9.id, unit_price: 20, status: 2)
+        invoice_item_10 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_10.id, unit_price: 20, status: 2)
+        invoice_item_11 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_11.id, unit_price: 20, status: 2)
+        invoice_item_12 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_12.id, unit_price: 20, status: 2)
+        invoice_item_13 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_13.id, unit_price: 20, status: 2)
+        invoice_item_14 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_14.id, unit_price: 20, status: 2)
+        invoice_item_15 = create(:invoice_item, item_id: item_6.id, invoice_id: invoice_15.id, unit_price: 20, status: 2)
+        transaction_1 = create(:transaction, invoice_id: invoice_1.id, result: 'success')
+        transaction_2 = create(:transaction, invoice_id: invoice_2.id, result: 'success')
+        transaction_3 = create(:transaction, invoice_id: invoice_3.id, result: 'success')
+        transaction_4 = create(:transaction, invoice_id: invoice_4.id, result: 'success')
+        transaction_5 = create(:transaction, invoice_id: invoice_5.id, result: 'success')
+        transaction_6 = create(:transaction, invoice_id: invoice_6.id, result: 'success')
+        transaction_7 = create(:transaction, invoice_id: invoice_7.id, result: 'success')
+        transaction_8 = create(:transaction, invoice_id: invoice_8.id, result: 'success')
+        transaction_9 = create(:transaction, invoice_id: invoice_9.id, result: 'success')
+        transaction_10 = create(:transaction, invoice_id: invoice_10.id, result: 'success')
+        transaction_11 = create(:transaction, invoice_id: invoice_11.id, result: 'success')
+        transaction_12 = create(:transaction, invoice_id: invoice_12.id, result: 'success')
+        transaction_13 = create(:transaction, invoice_id: invoice_13.id, result: 'success')
+        transaction_14 = create(:transaction, invoice_id: invoice_14.id, result: 'success')
+        transaction_15 = create(:transaction, invoice_id: invoice_15.id, result: 'success')
+  
+        expected = [customer_6, customer_4, customer_3, customer_2, customer_1]
+
+        expect(merchant_1.top_five_customers).to eq(expected)
+      end
     end
   end
 

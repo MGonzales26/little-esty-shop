@@ -35,4 +35,24 @@ describe 'When I visit a merchants admin show page' do
     expect(current_path).to eq("/admin/merchants/#{@merchant_1.id}")
     expect(page).to have_content("New Merchant Name")
   end
+
+  it "shows an affirmative message if successfully updated" do
+    visit edit_admin_merchant_path(@merchant_1)
+    
+    fill_in :name, :with => "New Merchant"
+    
+    click_button("Update Merchant")
+
+    expect(page).to have_content("Information successfully updated!")
+  end
+
+  it "shows an error message if unsuccessful updated" do
+    visit edit_admin_merchant_path(@merchant_1)
+
+    fill_in :name, :with => ""
+    
+    click_button("Update Merchant")
+
+    expect(page).to have_content("Unable to update information!")
+  end
 end
