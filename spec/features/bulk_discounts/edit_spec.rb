@@ -35,11 +35,13 @@ RSpec.describe "Edit Bulk Discount Page" do
           click_on("Update Bulk discount")
           expect(current_path).to eq(merchant_bulk_discount_path(@merchant, @bulk_discount))
 
-          expect(page).to have_content("5")
-          expect(page).to have_content("15")
+          within("#dicount-info") do
+            expect(page).to have_content("5")
+            expect(page).to have_content("15")
 
-          expect(page).to_not have_content("20")
-          expect(page).to_not have_content("10")
+            expect(page).to_not have_content("20")
+            expect(page).to_not have_content("10")
+          end
         end
 
         it "renders a flash message if the discount is updated or not" do

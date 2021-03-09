@@ -15,6 +15,29 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'webmock/rspec'
 RSpec.configure do |config|
+
+  config.before(:each) do
+    json_response = File.read('spec/fixtures/contributors.json')
+    stub_request(:get, "https://api.github.com/repos/Diana20920/little-esty-shop/contributors").
+    to_return(status: 200, body: json_response)
+    
+    json_response = File.read('spec/fixtures/repo_name.json')
+    stub_request(:get, "https://api.github.com/repos/Diana20920/little-esty-shop").
+    to_return(status: 200, body: json_response)
+ 
+    json_response = File.read('spec/fixtures/pull_requests.json')
+    stub_request(:get, "https://api.github.com/repos/diana20920/little-esty-shop/pulls?state=all").
+    to_return(status: 200, body: json_response)
+    
+    json_response = File.read('spec/fixtures/commits.json')
+    stub_request(:get, "https://api.github.com/repos/diana20920/little-esty-shop/commits?author=mgonzales26&per_page=100").
+    to_return(status: 200, body: json_response)
+
+    json_response = File.read('spec/fixtures/holidays.json')
+    stub_request(:get, "https://date.nager.at/Api/v2/NextPublicHolidays/us").
+    to_return(status: 200, body: json_response)
+  end
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
