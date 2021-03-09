@@ -38,14 +38,14 @@ RSpec.describe "Merchant Invoice Show Page" do
       within "#invoice_item-info-#{@invoice_item1.id}" do 
         expect(page).to have_content("Invoice item name: #{@item1.name}")
         expect(page).to have_content("Invoice item quantity: #{@invoice_item1.quantity}")
-        expect(page).to have_content("Invoice item price: #{@invoice_item1.unit_price}")
+        expect(page).to have_content("Invoice item price: $#{@invoice_item1.unit_price}")
         expect(page).to have_content("Invoice item status: #{@invoice_item1.status}")
       end
 
       within "#invoice_item-info-#{@invoice_item2.id}" do 
         expect(page).to have_content("Invoice item name: #{@item2.name}")
         expect(page).to have_content("Invoice item quantity: #{@invoice_item2.quantity}")
-        expect(page).to have_content("Invoice item price: #{@invoice_item2.unit_price}")
+        expect(page).to have_content("Invoice item price: $#{@invoice_item2.unit_price}")
         expect(page).to have_content("Invoice item status: #{@invoice_item2.status}")
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe "Merchant Invoice Show Page" do
       visit "/merchants/#{@merchant1.id}/invoices/#{@invoice1.id}"
 
       within "#total-revenue" do 
-        expect(page).to have_content("Total revenue from invoice: 15")
+        expect(page).to have_content("Total Revenue Reflecting All Discounts: $15")
       end
     end
 
@@ -109,9 +109,9 @@ RSpec.describe "Merchant Invoice Show Page" do
       within("#invoice_item-info-#{invoice_item1.id}") do
         expect(page).to have_content("A discount was not applied to this item")
       end
-
+      
       within("#invoice_item-info-#{invoice_item2.id}") do
-        expect(page).to have_link("A discount of %#{invoice_item2.available_discounts.percentage_discount} was applied to #{invoice_item2.item.name} because #{invoice_item2.available_discounts.quantity_threshold} or more were ordered.")
+        expect(page).to have_link("A discount of #{invoice_item2.available_discounts.percentage_discount}% was applied to #{invoice_item2.item.name} because #{invoice_item2.available_discounts.quantity_threshold} or more were ordered.")
       end
     end
 
@@ -128,7 +128,7 @@ RSpec.describe "Merchant Invoice Show Page" do
       visit merchant_invoice_path(merchant1, invoice1)
 
       within("#invoice_item-info-#{invoice_item2.id}") do
-        click_link("A discount of %#{invoice_item2.available_discounts.percentage_discount} was applied to #{invoice_item2.item.name} because #{invoice_item2.available_discounts.quantity_threshold} or more were ordered.")
+        click_link("A discount of #{invoice_item2.available_discounts.percentage_discount}% was applied to #{invoice_item2.item.name} because #{invoice_item2.available_discounts.quantity_threshold} or more were ordered.")
         expect(current_path).to eq(merchant_bulk_discount_path(merchant1, bulk_discount))
       end
     end
