@@ -20,12 +20,6 @@
   </body>
 
   <footer>
-  <p><%=  @repo_name %></p>
-  <p><%= "#{@contributors[0].name}, #{@contributors[2].name}, #{@contributors[3].name}, #{@contributors[4].name}"%></p> 
-  <%  @commits.each do |contrib, num| %>
-  <p><%= contrib %>--<%= num %></p>
-  <% end  %>
-  <p><%=  @pull_requests%></p>
 
   </footer>
 </html>

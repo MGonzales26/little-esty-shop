@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :application, :usernames
+  # before_action :application, :usernames
 
   def application
     @repo_name ||= GitService.get_repo_name
