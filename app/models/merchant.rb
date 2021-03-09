@@ -6,7 +6,6 @@ class Merchant < ApplicationRecord
   enum status: { enabled: 0, disabled: 1 }
 
   def top_five_customers
-    # require 'pry'; binding.pry
     Customer.joins(invoices: :items)
             .where('merchant_id = ?', self.id)
             .joins(invoices: :transactions)

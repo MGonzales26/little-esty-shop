@@ -8,10 +8,6 @@ RSpec.describe "Bulk Discount Index Page" do
     @bulk_discount2 = create(:bulk_discount, merchant: @merchant)
     @bulk_discount3 = create(:bulk_discount, merchant: @merchant)
     @bulk_discount4 = create(:bulk_discount, merchant: @merchant)
-
-    json_response = File.read('spec/fixtures/holidays.json')
-      stub_request(:get, "https://date.nager.at/Api/v2/NextPublicHolidays/us").
-        to_return(status: 200, body: json_response)
   end
   describe "As a merchant" do
     describe "When I visit my merchant dashboard" do
