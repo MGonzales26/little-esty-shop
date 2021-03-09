@@ -8,6 +8,12 @@
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <header>
+      <div id='merchant-links'>
+        <%= link_to "My Dashboard", merchant_dashboard_index_path(@merchant)%>
+        <%= link_to "My Items", merchant_items_path(@merchant)%>
+        <%= link_to "My Invoices", merchant_invoices_path(@merchant)%>
+        <%= link_to "My Discounts", merchant_bulk_discounts_path(@merchant)%>
+      </div>
     </header>
   </head>
 
