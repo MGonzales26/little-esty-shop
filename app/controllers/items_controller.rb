@@ -1,4 +1,5 @@
 class ItemsController < ApplicationController
+  layout 'merchant'
   before_action :find_merchant, except: [:destroy]#[:index, :show, :edit, :update, :new, :create]
   before_action :find_item, only: [:show, :edit, :update]
   

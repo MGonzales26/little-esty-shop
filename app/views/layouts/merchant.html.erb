@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LittleEtsyShop</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <header>
+      <div class="merchant-links">
+        <%= link_to "My Dashboard", merchant_dashboard_index_path(@merchant) %>
+        <%= link_to "My Items", merchant_items_path(@merchant) %>
+        <%= link_to "My Invoices", merchant_invoices_path(@merchant) %>
+        <%= link_to "My Discounts", merchant_bulk_discounts_path(@merchant) %>
+      </div>
+    </header>
+  </head>
+
+  <body>
+    <% flash.each do |type, message| %>
+      <p><%= message %></p>
+    <% end %>
+
+    <%= yield %>
+  </body>
+
+  <footer>
+
+  </footer>
+</html>

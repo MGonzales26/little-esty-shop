@@ -54,8 +54,17 @@ RSpec.describe "Bulk Discount New Page" do
           
           expect(page).to have_content("You have successfully created a new Bulk Discount")
         end
-      end
+        
+        it "Does not successfully create a discount if non integer used" do
+          visit new_merchant_bulk_discount_path(@merchant)
 
+          fill_in 'bulk_discount[quantity_threshold]', with: "five"
+          fill_in 'bulk_discount[percentage_discount]', with: 20
+          click_on("Create Bulk discount")
+
+          expect(page).to have_content("ERROR: Missing required information")
+        end
+      end
     end
   end
 end

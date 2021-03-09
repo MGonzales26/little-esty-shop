@@ -123,7 +123,7 @@ RSpec.describe 'Admin Invoices Show page' do
       visit "/admin/invoices/#{invoice.id}"
 
       within (".total-revenue") do
-        expect(page).to have_content("Total Revenue: #{invoice.total_revenue}")
+        expect(page).to have_content("Total Revenue Reflecting All Discounts: $#{invoice.total_revenue}")
       end
     end
   end
@@ -141,7 +141,7 @@ RSpec.describe 'Admin Invoices Show page' do
         
         visit admin_invoice_path(invoice1)
 
-        expect(page).to have_content("Total Revenue: 80")
+        expect(page).to have_content("Total Revenue Reflecting All Discounts: $80")
       end
       
       it "shows the total revenue includes bulk discounts in the calculation" do
@@ -157,8 +157,8 @@ RSpec.describe 'Admin Invoices Show page' do
         invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
         
         visit admin_invoice_path(invoice1)
-        
-        expect(page).to have_content("Total Revenue: 55")
+
+        expect(page).to have_content("Total Revenue Reflecting All Discounts: $55")
       end
     end
   end
