@@ -18,57 +18,24 @@ RSpec.describe Invoice, type: :model do
         expect(invoice.format_day).to eq(invoice.created_at.strftime("%A %B %d, %Y"))
       end
     end
-  end
-  
-  describe 'class methods' do
-    describe '::incomplete' do
-      it 'displays invoices with status of cancelled or in progress' do
-        invoice_1 = create(:invoice, status: 0)
-        invoice_2 = create(:invoice, status: 0)
-        invoice_3 = create(:invoice, status: 2)
-        invoice_4 = create(:invoice, status: 1)
-        invoice_5 = create(:invoice, status: 1)
-        invoice_6 = create(:invoice, status: 1)
-        invoice_7 = create(:invoice, status: 2)
 
-        expect((Invoice.incomplete).count).to eq(4)
-      end
-    end
-
-    describe '::oldest_to_newest' do
-      it 'sorts incomplete invoices from oldest to newest by create date' do
-        invoice_1 = create(:invoice, status: 0, created_at: Time.parse("2015-10-31"))
-        invoice_2 = create(:invoice, status: 0, created_at: Time.parse("2010-09-20"))
-        invoice_3 = create(:invoice, status: 2, created_at: Time.parse("2019-03-25"))
-        invoice_7 = create(:invoice, status: 2, created_at: Time.parse("2000-11-18"))
-
-        expect(Invoice.oldest_to_newest.first).to eq(invoice_7)
-        expect(Invoice.oldest_to_newest.last).to eq(invoice_3)
-      end
-    end
-
-    describe "::merchants_invoices" do
-      it "lists all of the invoices given a merchant's id" do
-        merchant = create(:merchant)
+    describe "#discounted_revenue" do
+      it "returns the total revenue from the invoice including the discounts if applicable" do
+        merchant1 = create(:merchant)
         merchant2 = create(:merchant)
-        item1 = create(:item, merchant: merchant)
-        item2 = create(:item, merchant: merchant)
-        item3 = create(:item, merchant: merchant2)
+        bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
+        bulk_discount2 = create(:bulk_discount, quantity_threshold: 3, percentage_discount: 50, merchant: merchant2)
+        cust1 = create(:customer)
         invoice1 = create(:invoice)
-        invoice2 = create(:invoice)
-        invoice3 = create(:invoice)
-        invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1)
-        invoice_item2 = create(:invoice_item, item: item2, invoice: invoice2)
-        invoice_item3 = create(:invoice_item, item: item3, invoice: invoice3)
-  
-        expected = [invoice1, invoice2]
-  
-        expect(Invoice.merchants_invoices(merchant.id)).to eq(expected)
+        item1 = create(:item, merchant: merchant1, unit_price: 10)
+        item2 = create(:item, merchant: merchant1, unit_price: 10)
+        invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
+        invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
+        
+        expect(invoice1.discounted_revenue).to eq(55)
       end
     end
-  end
 
-  describe 'instance methods' do
     describe '#date_created' do
       it "formats created_at value to 'Monday, July 18, 2019'" do
         invoice_1 = create(:invoice, status: 0)
@@ -116,23 +83,53 @@ RSpec.describe Invoice, type: :model do
 
       end
     end
+  end
+  
+  describe 'class methods' do
+    describe '::incomplete' do
+      it 'displays invoices with status of cancelled or in progress' do
+        invoice_1 = create(:invoice, status: 0)
+        invoice_2 = create(:invoice, status: 0)
+        invoice_3 = create(:invoice, status: 2)
+        invoice_4 = create(:invoice, status: 1)
+        invoice_5 = create(:invoice, status: 1)
+        invoice_6 = create(:invoice, status: 1)
+        invoice_7 = create(:invoice, status: 2)
 
-    describe "#iscounted_revenue" do
-      it "returns the total revenue from the invoice including the discounts if applicable" do
-        merchant1 = create(:merchant)
-        merchant2 = create(:merchant)
-        bulk_discount = create(:bulk_discount, quantity_threshold: 5, percentage_discount: 50, merchant: merchant1)
-        bulk_discount2 = create(:bulk_discount, quantity_threshold: 3, percentage_discount: 50, merchant: merchant2)
-        cust1 = create(:customer)
-        invoice1 = create(:invoice)
-        item1 = create(:item, merchant: merchant1, unit_price: 10)
-        item2 = create(:item, merchant: merchant1, unit_price: 10)
-        invoice_item1 = create(:invoice_item, invoice: invoice1, item: item1, quantity: 3, unit_price: 10)
-        invoice_item2 = create(:invoice_item, invoice: invoice1, item: item2, quantity: 5, unit_price: 10)
-        
-        expect(invoice1.discounted_revenue).to eq(55)
+        expect((Invoice.incomplete).count).to eq(4)
       end
+    end
 
+    describe '::oldest_to_newest' do
+      it 'sorts incomplete invoices from oldest to newest by create date' do
+        invoice_1 = create(:invoice, status: 0, created_at: Time.parse("2015-10-31"))
+        invoice_2 = create(:invoice, status: 0, created_at: Time.parse("2010-09-20"))
+        invoice_3 = create(:invoice, status: 2, created_at: Time.parse("2019-03-25"))
+        invoice_7 = create(:invoice, status: 2, created_at: Time.parse("2000-11-18"))
+
+        expect(Invoice.oldest_to_newest.first).to eq(invoice_7)
+        expect(Invoice.oldest_to_newest.last).to eq(invoice_3)
+      end
+    end
+
+    describe "::merchants_invoices" do
+      it "lists all of the invoices given a merchant's id" do
+        merchant = create(:merchant)
+        merchant2 = create(:merchant)
+        item1 = create(:item, merchant: merchant)
+        item2 = create(:item, merchant: merchant)
+        item3 = create(:item, merchant: merchant2)
+        invoice1 = create(:invoice)
+        invoice2 = create(:invoice)
+        invoice3 = create(:invoice)
+        invoice_item1 = create(:invoice_item, item: item1, invoice: invoice1)
+        invoice_item2 = create(:invoice_item, item: item2, invoice: invoice2)
+        invoice_item3 = create(:invoice_item, item: item3, invoice: invoice3)
+  
+        expected = [invoice1, invoice2]
+  
+        expect(Invoice.merchants_invoices(merchant.id)).to eq(expected)
+      end
     end
   end
 end

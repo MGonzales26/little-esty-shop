@@ -1,4 +1,5 @@
 class BulkDiscountsController < ApplicationController
+  layout 'merchant'
   before_action :set_merchant, only: [:index, :show, :new, :create, :edit, :update, :destroy]
   before_action :set_bulk_discount, only: [:show, :edit, :update]
 
