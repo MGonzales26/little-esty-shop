@@ -38,9 +38,9 @@ gem 'json'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 
-# group :test do
-#   gem "webmock"
-# end
+group :test do
+  gem "webmock"
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
