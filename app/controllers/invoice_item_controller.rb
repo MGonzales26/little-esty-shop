@@ -1,4 +1,6 @@
 class InvoiceItemController < ApplicationController
+  layout 'merchants'
+  
   def update 
     inv_item = InvoiceItem.find(params[:id])
     inv_item.update!(status: params[:status])

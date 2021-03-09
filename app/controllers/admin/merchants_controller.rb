@@ -1,4 +1,5 @@
 class Admin::MerchantsController < ApplicationController
+  layout 'admin'
   before_action :find_merchant, only: [:show, :edit, :update]
 
   def index
