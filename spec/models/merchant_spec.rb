@@ -174,6 +174,49 @@ RSpec.describe Merchant, type: :model do
         expect(merchant_1.top_five_customers).to eq(expected)
       end
     end
+
+    describe "#items_not_shipped" do
+      it "returns invoices where the item has not shipped yet" do
+
+        merchant = create(:merchant)
+  
+        invoice_1 = create(:invoice)
+        invoice_2 = create(:invoice)
+        invoice_3 = create(:invoice)
+        invoice_4 = create(:invoice)
+  
+        item_1 = create(:item, merchant: merchant)
+        item_2 = create(:item, merchant: merchant)
+        item_3 = create(:item, merchant: merchant)
+        item_4 = create(:item, merchant: merchant)
+        item_5 = create(:item, merchant: merchant)
+  
+        invoice_item_1 = create(:invoice_item, item: item_1, invoice: invoice_1, status: 0)
+        invoice_item_2 = create(:invoice_item, item: item_2, invoice: invoice_2, status: 0)
+        invoice_item_3 = create(:invoice_item, item: item_3, invoice: invoice_3, status: 2)
+        invoice_item_4 = create(:invoice_item, item: item_4, invoice: invoice_4, status: 0)
+  
+        expected = [invoice_1, invoice_2, invoice_4]
+
+        expect(merchant.items_not_shipped).to eq(expected)
+      end
+    end
+
+    describe "#enabled?" do
+      it "returns true if the merchant is enabled" do
+        merchant = create(:merchant, status: 0)
+
+        expect(merchant.enabled?).to eq(true)
+      end
+    end
+    
+    describe "#disabled?" do
+      it "returns true if the merchant is disabled" do
+        merchant = create(:merchant, status: 1)
+
+        expect(merchant.disabled?).to eq(true)
+      end
+    end
   end
 
   describe "class methods" do
